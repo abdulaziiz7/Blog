@@ -1,11 +1,12 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from app.forms import BlogForm
-from app.models import Blog
+from app.models import Blog, User
 
 
 # class CreateBlogView(View):
@@ -26,7 +27,7 @@ from app.models import Blog
 #         return redirect(reverse('app:home'))
 
 class HomePageView(ListView):
-    # model = Blog
+    model = Blog
     queryset = Blog.objects.published()
     template_name = 'home.html'
     context_object_name = 'blogs'
@@ -41,11 +42,11 @@ class HomePageView(ListView):
     #     qs = qs.is_published()
     #     return qs
 
+
 class CreateBlogView(CreateView):
     template_name = 'create_blog.html'
     form_class = BlogForm
-    success_url = '/'
-    
+    success_url = '/home'
 
     def form_valid(self, form):
         blog = form.save(commit=False)

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 
 {% block title %} {{ blog.title }} {% endblock %}
@@ -8,7 +9,7 @@
         <p>{{ blog.title }}</p>
         <p>{{ blog.description }}</p>
         {% if blog.image %}
-            <img src="{{ blog.image.url }}">
+            <img src="{{ blog.image.url }}"  width="30%" height="17%">
         {% endif %}
         <p>{{ blog.created_at }}</p>
         <p>{{ blog.updated_at }}</p>
@@ -30,8 +31,8 @@
     </div>
     <div class="col-6">
         {% for comment in blog.comments_set.all %}
-            <p>{{ comment.text }}</p>
-            <p>{{ comment.author }}</p>
+            <img src="{% static 'image/download.png' %}" height="10%" width="3.5%"> {{ comment.author }}:
+                <p>{{ comment.text }}</p>
         {% endfor %}
     </div>
 

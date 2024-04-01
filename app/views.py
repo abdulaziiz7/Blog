@@ -6,40 +6,13 @@ from django.contrib import messages
 from django.urls import reverse
 
 from app.models import Blog
-from .forms import BlogForm, LoginForm, SignupForm, CommentForm
+from .forms import BlogForm, CommentForm
 
 
 def home(request):
     blogs = Blog.objects.all()
-
     return render(request, 'home.html', {'blogs': blogs})
 
-def login_view(request):
-    form = LoginForm()
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect(reverse('app:home'))
-
-    return render(request, 'login.html', {'form': form})
-
-
-def signup_view(request):
-    form = SignupForm()
-    if request.method == "POST":
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('app:login'))
-        # print(form.errors)
-    return render(request, 'sign_up.html', {'form': form})
-
-def logout_view(request):
-    logout(request)
-    return redirect(reverse('app:login'))
 
 @login_required(login_url='/login/')
 def create_blog(request):
@@ -58,6 +31,7 @@ def create_blog(request):
     context = {'form': form}
     return render(request, 'create_blog.html', context)
 
+
 def detail_blog(request, id):
     blog = get_object_or_404(Blog, id=id)
     form = CommentForm()
@@ -75,6 +49,8 @@ def detail_blog(request, id):
     }
     return render(request, 'detail_blog.html', context)
 
+
+#
 @login_required(login_url='/login/')
 def edit_blog(request, slug):
     blog = get_object_or_404(Blog, slug=slug)

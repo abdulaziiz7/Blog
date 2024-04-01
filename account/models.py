@@ -1,14 +1,17 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 from account.managers import UserManager
 
 
 class CustomUser(AbstractUser):
-    phone = models.CharField(max_length=11, unique=True)
-    image = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-    bio = models.TextField(null=True, blank=True)
+    phone = models.CharField(max_length=13, unique=True)
+    username = None
+    # birth_date = models.DateField()
 
     USERNAME_FIELD = 'phone'
+
     objects = UserManager()
 
+    def __str__(self):
+        return self.phone

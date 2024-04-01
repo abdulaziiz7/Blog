@@ -6,6 +6,7 @@ from app.managers import BlogManager
 
 User = get_user_model()
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
@@ -26,8 +27,9 @@ class Blog(models.Model):
     is_published = models.BooleanField(default=False)
 
     objects = BlogManager()
+
     def __str__(self):
-        return self.title
+        return f"{self.pk}   {self.title}"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
